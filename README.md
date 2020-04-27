@@ -19,4 +19,4 @@ It represent data collected from the accelerometers from Samsung Galaxy S smartp
       4 - Appropriately labels the data set with descriptive variable names. 
       5 - From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity         and each subject.
       
-  - tidy_data_set.txt is the final tidy data set created in step 5
+  - tidydataset.txt is the final tidy data set created in step 5
