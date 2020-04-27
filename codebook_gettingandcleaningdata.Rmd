@@ -1,0 +1,94 @@
+---
+title: "Peer-graded Assignment: Getting and Cleaning Data Course Project Code Book"
+author: "Ali CHAOUCHE"
+date: "4/26/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+## 1.	Summary
+The attached script named run_analysis.R perform the steps required by the peer-graded assignment: "Getting and Cleaning Data Course".
+
+## 2.	Dataset description 
+The downloaded dataset is the following: 
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip)
+
+It contains 561 features (described hereafter as “features”) collected from the accelerometers from the Samsung Galaxy S smartphone from 30 individuals (described here after as “subjects”) for 6 types of activities (described here after as “activity”).
+
+Two folders named “test” and “train” are provided and contains the above data.
+
+The data are as following: 
+
+•	features        <- read.table("./features.txt",header=FALSE). With 561 columns, 2 rows. The features correspond to post treatments of the accelerometer and gyroscope 3-axial raw signals tAcc-XYZ and tGyro-XYZ
+
+•	 activityLabels   <- read.table("./activity_labels.txt",header=FALSE). With 6 columns and 2 rows. List of activities performed when the corresponding measurements were taken and its labels. 1: Walking, 2: Walking_Upstairs, 3: Walking_Downstairs, 4: Sitting, 5: Standing, 6: Laying
+
+•	subjectTrain    <-read.table(“./subject_train.txt”, header=FALSE). With 7352 rows and 1 column. Each row identifies the subject (1 to 30) who performed the activity. 
+
+•	xTrain          <- read.table("./X_train.txt", header=FALSE). With 7352 rows and 561 columns. It contains the values  for the features taken into account in the dataset
+ 
+•	yTrain          <- read.table("./y_train.txt", header=FALSE). With 7352 rows, 1 columns.It contains the activity code labels
+
+•	subjectTest   <-read.table("./subject_test.txt", header=FALSE). With 2947rows and 1 column. Each row identifies the subject who performed the activity 
+
+•	xTest          <- read.table("./X_test.txt", header=FALSE). With 2947 rows and 561 columns. It contains the values for the features taken into account in the dataset
+ 
+•	yTest          <- read.table("./y_test.txt", header=FALSE). With 2947 rows, 1 columns. It contains the activity code labels
+
+
+## 3.	Merges the training and the test sets to create one data set
+
+For each train and test dataset is created a new file (named trainData and testTrain) by merging  with cbind() subject information , activity label and associated measurement. Duplicated columns are removed.
+
+• trainData <- cbind(subjectTrain,yTrain,xTrain)
+
+
+• testData <- cbind(subjectTest, yTest ,xTest)
+
+
+the final dataset mergedData (10299 rows and 563 columns) is obtained by merging with rbind() trainData and testData files
+ 
+•	mergedData<-rbind(trainData,testData)
+
+## 4.	Extracts only the measurements on the mean and standard deviation for each measurement 
+
+The corresponding file mergedData_with_mean_sd (10299 rows, 88 columns) is created by removing the duplicated columns in the previous mergedData and subsetting it with subject_Id, actitivity_Id and the measurements on the mean and standard deviation (std) for each measurement
+
+•	x <-mergedData[!duplicated(as.list(mergedData))]
+•	mergedData_with_mean_sd <- select(x,"subject_Id","activity_Id", contains("mean"), contains("std"))
+
+## 5.	Uses descriptive activity names to name the activities in the data set 
+Labels activity_Id column of the mergedData replaced with corresponding activity denomination
+
+•	mergedData$activity_Id  <-  factor(mergedData $activity_Id, labels=c("WALKING","WALKING_UPSTAIRS", "WALKING DOWNSTAIRS", "SITTING", "STANDING", "LAYING"))
+
+## 6.	Appropriately labels the data set with descriptive variable names 
+
+Using the gsub() function in R the following label changes were made
+•	 "Acc"-> "Accelerometer"
+•	"Gyro"-> "Gyroscope"
+•	"BodyBody"->, "Body"
+•	"Mag" -> "Magnitude"
+•	"^t"-> "Time"
+•	"^f" -> "Frequency",
+•	"tBody" -> "TimeBody
+•	"-mean ()" ->"Mean",
+•	Std ()"-> "STD"
+•	"-freq ()"->"Frequency",
+•	"angle"->"Angle",
+•	"gravity"-> "Gravity"
+
+
+7.	From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject 
+tidy_data_set (180 rows, 86 columns) is created by using the group_by() function in R to group by subject and activity and by summarizing it taking the means of each variable for each activity and each subject
+•	mergedData_with_mean_sd %>% group_by(subject_Id, activity_Id) %>% summarise_all(mean)->tidy_data_set
+
+Data set uploaded as a txt file, tidydataset.txt, created with write.table() using row.name=FALSE
+•	write.table (tidy_data_set, file = "C:/Users/User /3. GETTING and CLEANING DATA/datacleaningproject/UCIHARDataset/tidydataset.txt",row.name=FALSE)
+
