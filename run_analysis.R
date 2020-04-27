@@ -111,5 +111,6 @@ names(mergedData_with_mean_sd)<-gsub("angle", "Angle", names(mergedData_with_mea
 names(mergedData_with_mean_sd)<-gsub("gravity", "Gravity", names(mergedData_with_mean_sd))
 
 # Question 5/From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+
 mergedData_with_mean_sd %>% group_by(subject_Id, activity_Id) %>% summarise_all(mean)->tidy_data_set
 write.table (tidy_data_set, file = "C:/Users/User/Documents/0. KUALA LUMPUR/20. THRIVE/Maths for DataSciences/DATA SCIENCES SPECIALIZATION/3. GETTING and CLEANING DATA/datacleaningproject/UCIHARDataset/tidydataset.txt",row.name=FALSE)
