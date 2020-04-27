@@ -5,9 +5,6 @@ date: "4/26/2020"
 output: html_document
 ---
 
-
-
-
 ## 1.	Summary
 The attached script named run_analysis.R perform the steps required by the peer-graded assignment: "Getting and Cleaning Data Course".
 
