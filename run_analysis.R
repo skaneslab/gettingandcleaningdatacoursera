@@ -79,7 +79,7 @@ mergedData_with_mean_sd <- select(x,"subject_Id","activity_Id", contains("mean")
 #4 SITTING
 #5 STANDING
 #6 LAYING
-mergedData_with_mean_sd$activity_Id <- factor(mergedData_with_mean_sd$activity_Id, labels=c("WALKING","WALKING_UPSTAIRS", "WALKING UPSTAIRS", "SITTING", "STANDING", "LAYING"))
+mergedData_with_mean_sd$activity_Id <- factor(mergedData_with_mean_sd$activity_Id, labels=c("WALKING","WALKING_UPSTAIRS", "WALKING DOWNSTAIRS", "SITTING", "STANDING", "LAYING"))
 
 # Question 4/ Appropriately labels the data set with descriptive variable names
 names(mergedData_with_mean_sd)<-gsub("Acc", "Accelerometer", names(mergedData_with_mean_sd))
